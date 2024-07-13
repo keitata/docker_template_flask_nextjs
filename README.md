@@ -1,0 +1,1 @@
+# docker_template_flask_nextjs
