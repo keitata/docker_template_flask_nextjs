@@ -1,0 +1,37 @@
+# TODO : volume trick : https://zenn.dev/yumemi_inc/articles/3d327557af3554
+# volumes:
+#   frontend_node_modules:
+
+services:
+  frontend:
+    build: frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/workdir
+      # - frontend_node_modules:/workdir/node_modules
+    command: ["bash", "docker-entrypoint.sh"]
+
+# TODO : PYTHONUNBUFFERED バッファリング off
+  backend:
+    build: backend
+    ports:
+      - 8000:5000
+    volumes:
+      - ./backend:/workdir
+    environment:
+      PYTHONUNBUFFERED: 1
+    command: ["bash", "docker-entrypoint.sh"]
+
+# TODO : set version
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.data/postgresql/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: test_db
+    restart: always
